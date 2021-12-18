@@ -28,7 +28,7 @@
             "metadata": {
                 "description": "Name of VM-Series VM in the Azure portal"
             },
-            "defaultValue": "PAFW-1"
+            "defaultValue": "azpafw01"
         },
         "imageVersion": {
             "type": "string",
@@ -88,8 +88,8 @@
             }
         },
         "virtualNetworkAddressPrefixes": {
-            "type": "array",
-            "defaultValue": "[array('10.0.0.0/16')]",
+            "type": "string",
+            "defaultValue": "10.0.0.0/16",
             "metadata": {
                 "description": "Virtual network address CIDR"
             }
@@ -244,7 +244,11 @@
         "availabilitySetPlatformUpdateDomainCount": {
             "type": "string",
             "defaultValue": "5"
-        }
+        },
+        "vmCount": {
+            "type": "string",
+			"defaultValue": "2"
+		}
     },
     "variables": {
         "imagePublisher": "paloaltonetworks",
@@ -266,7 +270,7 @@
         "subnet0Ref": "[if(equals(parameters('vnetNewOrExisting'),'new'), variables('newSubnet0Ref'), variables('existingSubnet0Ref'))]",
         "subnet1Ref": "[if(equals(parameters('vnetNewOrExisting'),'new'), variables('newSubnet1Ref'), variables('existingSubnet1Ref'))]",
         "subnet2Ref": "[if(equals(parameters('vnetNewOrExisting'),'new'), variables('newSubnet2Ref'), variables('existingSubnet2Ref'))]",
-        "virtualNetworkAddressPrefix": "[parameters('virtualNetworkAddressPrefixes')[0]]",
+        "virtualNetworkAddressPrefix": "[parameters('virtualNetworkAddressPrefixes')]",
         "zones": [
             "[parameters('zone')]"
         ],
@@ -363,7 +367,7 @@
                             "protocol": "*",
                             "sourcePortRange": "*",
                             "destinationPortRange": "*",
-                            "sourceAddressPrefix": "[variables('virtualNetworkAddressPrefix')]",
+                            "sourceAddressPrefix": "*",
                             "destinationAddressPrefix": "*",
                             "access": "Allow",
                             "priority": 101,
